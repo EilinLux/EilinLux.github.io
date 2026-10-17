@@ -32,3 +32,13 @@ A bold, Neo-Brutalist personal website and interactive architecture hub built wi
    - Under **Build and deployment** → **Source**, select **Deploy from a branch**.
    - Choose **`main`** and **`/ (root)`**, then click **Save**.
    - In ~60 seconds, your site will be live at **`https://eilinlux.github.io`**!
+
+
+### New Release
+Whenever you want to update your site in the future, just edit the files here in ./github-site and run:
+
+   ```bash
+git add .
+git commit -m "Update portfolio"
+git push
+   ```
