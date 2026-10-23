@@ -66,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 4. INTERACTIVE STICKERS
+  // 4. INTERACTIVE STICKERS & LANGUAGE GREETING CHIPS
   // --------------------------------------------------------------------------
-  document.querySelectorAll('.sticker').forEach((sticker) => {
-    sticker.addEventListener('click', () => {
-      sticker.classList.remove('popped');
-      void sticker.offsetWidth; // trigger reflow
-      sticker.classList.add('popped');
-      const msg = sticker.getAttribute('data-toast');
+  document.querySelectorAll('.sticker, .lang-chip').forEach((item) => {
+    item.addEventListener('click', () => {
+      item.classList.remove('popped');
+      void item.offsetWidth; // trigger reflow
+      item.classList.add('popped');
+      const msg = item.getAttribute('data-toast');
       if (msg) showToast(msg);
     });
   });

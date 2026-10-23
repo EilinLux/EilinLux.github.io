@@ -1999,6 +1999,151 @@ button, input, textarea {
 }
 
 /* ==========================================================================
+   HUMAN LANGUAGES / POLYGLOT PANEL
+   ========================================================================== */
+.languages-panel {
+  border-top: var(--border-width) solid var(--border-color);
+  background: var(--bg-elevated);
+  padding: 24px;
+}
+
+.languages-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.languages-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.languages-hint {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+.languages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.lang-tier-card {
+  background: var(--bg-card);
+  border: var(--border-thin) solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lang-tier-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lang-battery {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+}
+
+.lang-tier-sub {
+  font-size: 0.86rem;
+  color: var(--ink-muted);
+  line-height: 1.45;
+}
+
+.lang-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.lang-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0px var(--border-color);
+  cursor: pointer;
+  transition: transform 0.15s var(--transition-bounce), background-color 0.15s ease;
+}
+
+.lang-chip:hover {
+  transform: translate(-2px, -2px);
+}
+
+.lang-chip:active {
+  transform: translate(1px, 1px);
+}
+
+.lang-chip--fluent:hover {
+  background: var(--pop-mint);
+  color: var(--on-pop);
+}
+
+.lang-chip--rusty:hover {
+  background: var(--pop-yellow);
+  color: var(--on-pop);
+}
+
+.lang-chip--micro:hover {
+  background: var(--pop-purple);
+  color: #FFFFFF;
+}
+
+.lang-chip--micro:hover .lang-info span {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.lang-flag {
+  font-size: 1.45rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.lang-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lang-info strong {
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.lang-info span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1080px) {
@@ -2032,7 +2177,8 @@ button, input, textarea {
   .project-card--featured,
   .sim-stage,
   .experience-layout,
-  .passport-stamps-grid {
+  .passport-stamps-grid,
+  .languages-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2106,7 +2252,8 @@ button, input, textarea {
   .atlas-topbar,
   .atlas-controls,
   .atlas-inspector,
-  .passport-stamps-grid {
+  .passport-stamps-grid,
+  .languages-panel {
     padding: 14px;
   }
 
