@@ -444,13 +444,13 @@ tools = [save_new_user]
       name: '🇩🇪 Regensburg, Germany',
       shortLabel: '🇩🇪 Regensburg',
       category: 'lived',
-      categoryLabel: '🏠 LIVED & WORKED',
+      categoryLabel: '🏠 LIVED & STUDIED',
       desc: 'Lived in historic Regensburg on the Danube river in Bavaria—medieval stone bridges and engineering rigor.',
       wx: 506, wy: 128, showWorldLabel: false,
       ex: 558, ey: 248, eLabelDir: 'right'
     },
 
-    // TRAVELED (14)
+    // TRAVELED (18)
     {
       id: 'japan',
       name: '🇯🇵 Japan',
@@ -462,6 +462,16 @@ tools = [save_new_user]
       ex: null, ey: null
     },
     {
+      id: 'iceland',
+      name: '🇮🇸 Iceland',
+      shortLabel: '🇮🇸 Iceland',
+      category: 'traveled',
+      categoryLabel: '✈️ TRAVELED & EXPLORED',
+      desc: 'Explored the land of fire and ice—glaciers, geothermal lagoons, volcanic black-sand beaches, and cascading waterfalls.',
+      wx: 412, wy: 82, showWorldLabel: true, labelDir: 'left',
+      ex: 145, ey: 68, eLabelDir: 'right'
+    },
+    {
       id: 'azores',
       name: '🇵🇹 Azores (Azzorre), Portugal',
       shortLabel: '🇵🇹 Azores',
@@ -469,7 +479,17 @@ tools = [save_new_user]
       categoryLabel: '✈️ TRAVELED & EXPLORED',
       desc: 'Traveled to the volcanic Azores archipelago in the middle of the Atlantic—crater lakes, hydrangeas, and wild ocean.',
       wx: 382, wy: 176, showWorldLabel: true, labelDir: 'left',
-      ex: 92, ey: 410, eLabelDir: 'right'
+      ex: 88, ey: 342, eLabelDir: 'right'
+    },
+    {
+      id: 'canaries',
+      name: '🇮🇨 Canary Islands, Spain',
+      shortLabel: '🇮🇨 Canaries',
+      category: 'traveled',
+      categoryLabel: '✈️ TRAVELED & EXPLORED',
+      desc: 'Traveled to the sun-drenched Canary Islands off the Atlantic coast—volcanic peaks, dunes, and eternal spring.',
+      wx: 415, wy: 213, showWorldLabel: true, labelDir: 'left',
+      ex: 88, ey: 458, eLabelDir: 'right'
     },
     {
       id: 'spain',
@@ -549,7 +569,17 @@ tools = [save_new_user]
       categoryLabel: '✈️ TRAVELED & EXPLORED',
       desc: 'Visited England—historic universities, vibrant cultural neighborhoods, and timeless landmarks.',
       wx: 444, wy: 118, showWorldLabel: false,
-      ex: 358, ey: 192, eLabelDir: 'right'
+      ex: 358, ey: 196, eLabelDir: 'right'
+    },
+    {
+      id: 'scotland',
+      name: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland (UK)',
+      shortLabel: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland',
+      category: 'traveled',
+      categoryLabel: '✈️ TRAVELED & EXPLORED',
+      desc: 'Traveled across Scotland—dramatic Highlands, historic castles, misty lochs, and Edinburgh’s gothic spires.',
+      wx: 440, wy: 102, showWorldLabel: false,
+      ex: 348, ey: 128, eLabelDir: 'right'
     },
     {
       id: 'dublin',
@@ -798,7 +828,7 @@ tools = [save_new_user]
   if (europeCallout) {
     europeCallout.addEventListener('click', () => {
       setMapView('europe');
-      showToast('🇪🇺 Zoomed into Europe Close-Up (20 pins)!');
+      showToast('🇪🇺 Zoomed into Europe Close-Up (24 pins)!');
     });
   }
 
@@ -819,7 +849,7 @@ tools = [save_new_user]
       const place = atlasPlaces.find((p) => p.id === placeId);
       if (place) {
         // Auto-switch view so densely packed European pins are super clear when clicked from stamps
-        if (place.ex !== null && place.id !== 'azores') {
+        if (place.ex !== null) {
           setMapView('europe');
         } else {
           setMapView('world');

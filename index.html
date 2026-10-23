@@ -792,7 +792,7 @@
                 </div>
               </div>
               <div class="project-links">
-                <a href="https://github.com/EilinLux/vertexai-workshop" target="_blank" rel="noopener noreferrer"
+                <a href="https://github.com/EilinLux/vertexai--workshop" target="_blank" rel="noopener noreferrer"
                   class="brutal-btn brutal-btn--sm" id="proj-vertex-ws">View Repository ↗</a>
               </div>
             </article>
@@ -1468,13 +1468,13 @@
           <div class="atlas-controls">
             <div class="atlas-filter-group" role="group" aria-label="Filter map pins by category">
               <button type="button" class="atlas-filter-btn active" data-map-filter="all">
-                ✨ All Places (27)
+                ✨ All Places (31)
               </button>
               <button type="button" class="atlas-filter-btn atlas-filter-btn--lived" data-map-filter="lived">
                 🏠 Lived &amp; Studied (7)
               </button>
               <button type="button" class="atlas-filter-btn atlas-filter-btn--traveled" data-map-filter="traveled">
-                ✈️ Traveled (14)
+                ✈️ Traveled (18)
               </button>
               <button type="button" class="atlas-filter-btn atlas-filter-btn--wishlist" data-map-filter="wishlist">
                 🧭 Want to Visit (6)
@@ -1526,13 +1526,18 @@
                 <path class="continent continent--americas" d="M 65 72 C 95 52, 185 48, 245 68 C 280 80, 305 110, 285 145 C 272 168, 242 188, 225 212 C 208 235, 195 256, 215 268 C 190 272, 165 255, 152 232 C 135 205, 118 182, 95 152 C 62 125, 45 90, 65 72 Z" />
                 <!-- Greenland -->
                 <path class="continent continent--island" d="M 310 36 C 340 28, 385 32, 395 56 C 402 74, 372 95, 342 90 C 315 86, 295 52, 310 36 Z" />
+                <!-- Iceland Cartoon Island -->
+                <path class="continent continent--oceania" d="M 398 76 C 410 70, 426 73, 428 84 C 426 93, 408 95, 398 88 Z" />
                 <!-- South America -->
                 <path class="continent continent--south-america" d="M 225 268 C 258 262, 315 285, 338 325 C 355 356, 335 405, 305 448 C 285 476, 262 495, 250 482 C 238 465, 235 415, 228 372 C 218 330, 205 282, 225 268 Z" />
                 <!-- Europe -->
                 <path class="continent continent--europe" d="M 442 72 C 472 55, 535 52, 578 72 C 602 85, 598 135, 575 165 C 552 186, 520 198, 488 192 C 455 188, 432 178, 435 152 C 438 128, 422 90, 442 72 Z" />
                 <!-- UK & Ireland Cartoon Islands -->
-                <path class="continent continent--europe" d="M 432 108 C 442 102, 454 110, 450 128 C 446 138, 432 136, 432 124 Z" />
+                <path class="continent continent--europe" d="M 432 100 C 442 94, 454 106, 450 128 C 446 138, 432 136, 432 120 Z" />
                 <path class="continent continent--europe" d="M 416 116 C 424 112, 430 118, 427 128 C 422 132, 414 126, 416 116 Z" />
+                <!-- Canary Islands Cartoon Dots -->
+                <circle cx="412" cy="212" r="5" class="continent continent--island" />
+                <circle cx="422" cy="215" r="4" class="continent continent--island" />
                 <!-- Africa -->
                 <path class="continent continent--africa" d="M 445 206 C 485 196, 548 202, 588 228 C 618 258, 622 308, 595 358 C 572 402, 545 436, 518 428 C 492 420, 485 365, 472 325 C 445 298, 420 268, 428 232 C 432 216, 438 209, 445 206 Z" />
                 <!-- Asia -->
@@ -1549,8 +1554,12 @@
               <g class="map-flight-paths" aria-hidden="true">
                 <!-- Milan to Japan -->
                 <path d="M 498 152 Q 700 65 892 168" class="flight-line flight-line--traveled" />
+                <!-- Milan to Iceland -->
+                <path d="M 498 152 Q 455 105 412 82" class="flight-line flight-line--traveled" />
                 <!-- Milan to Azores -->
                 <path d="M 498 152 Q 435 162 382 176" class="flight-line flight-line--traveled" />
+                <!-- Milan to Canary Islands -->
+                <path d="M 498 152 Q 445 190 415 213" class="flight-line flight-line--traveled" />
                 <!-- Milan to US -->
                 <path d="M 498 152 Q 340 95 205 165" class="flight-line flight-line--wishlist" />
                 <!-- Milan to Mexico -->
@@ -1578,8 +1587,8 @@
 
               <!-- Europe Dense Cluster Callout Box on World View -->
               <g class="europe-zoom-Trigger-group" id="svg-europe-callout" role="button" tabindex="0" aria-label="Click to zoom into Europe map">
-                <rect x="405" y="75" width="165" height="122" rx="12" class="europe-cluster-box" />
-                <text x="487" y="68" text-anchor="middle" class="europe-cluster-hint">🔍 Click for Europe Close-Up (19 pins)</text>
+                <rect x="392" y="68" width="182" height="132" rx="12" class="europe-cluster-box" />
+                <text x="483" y="61" text-anchor="middle" class="europe-cluster-hint">🔍 Click for Europe Close-Up (24 pins)</text>
               </g>
 
               <!-- WORLD VIEW PINS (Rendered dynamically by app.js or static fallback) -->
@@ -1599,6 +1608,8 @@
 
               <!-- Cartoon Europe Landmasses -->
               <g class="map-continents">
+                <!-- Iceland (North-West Atlantic) -->
+                <path class="continent continent--oceania" d="M 95 45 C 128 32, 178 38, 192 64 C 196 86, 158 102, 118 96 C 92 90, 82 62, 95 45 Z" />
                 <!-- Iberian Peninsula (Spain & Portugal) -->
                 <path class="continent continent--americas" d="M 215 335 C 245 322, 325 328, 355 352 C 365 385, 342 438, 298 448 C 250 455, 205 435, 202 395 C 200 365, 205 345, 215 335 Z" />
                 <!-- France, Benelux, Germany, Central Europe, Poland -->
@@ -1608,26 +1619,34 @@
                 <!-- Sicily & Sardinia -->
                 <ellipse cx="558" cy="482" rx="18" ry="11" class="continent continent--island" />
                 <ellipse cx="482" cy="435" rx="12" ry="22" class="continent continent--island" />
-                <!-- Balkans & Greece -->
+                <!-- Balkans, Albania & Greece -->
                 <path class="continent continent--asia" d="M 585 335 C 625 332, 685 345, 715 378 C 728 412, 708 468, 675 482 C 648 488, 635 455, 622 418 C 605 385, 585 358, 585 335 Z" />
-                <!-- UK (England/Britain) -->
-                <path class="continent continent--oceania" d="M 328 135 C 352 125, 382 145, 388 185 C 392 212, 368 232, 335 228 C 312 224, 318 195, 325 168 Z" />
+                <!-- UK (Scotland + England/Britain) -->
+                <path class="continent continent--oceania" d="M 326 105 C 355 95, 384 125, 388 185 C 392 212, 368 232, 335 228 C 312 224, 318 185, 324 148 Z" />
                 <!-- Ireland (Dublin) -->
                 <path class="continent continent--island" d="M 265 162 C 288 152, 308 168, 305 196 C 298 214, 272 214, 262 196 C 255 182, 255 168, 265 162 Z" />
                 <!-- Scandinavia (Sweden / Nordic Peninsula) -->
                 <path class="continent continent--africa" d="M 515 28 C 565 18, 625 28, 638 65 C 645 102, 618 158, 582 168 C 548 172, 525 148, 518 112 C 508 78, 495 38, 515 28 Z" />
                 <!-- Azores Archipelago Inset Box (Atlantic Ocean Left) -->
                 <g class="azores-inset">
-                  <rect x="28" y="340" width="142" height="118" rx="12" fill="var(--bg-elevated)" stroke="#111115" stroke-width="3" stroke-dasharray="6 4" />
-                  <text x="99" y="362" text-anchor="middle" class="azores-inset-title">🌊 AZORES ARCHIPELAGO</text>
-                  <path class="continent continent--island" d="M 55 405 C 72 396, 102 398, 115 412 C 105 424, 70 422, 55 405 Z" />
-                  <circle cx="132" cy="418" r="7" class="continent continent--island" />
-                  <circle cx="48" cy="392" r="6" class="continent continent--island" />
+                  <rect x="24" y="280" width="152" height="102" rx="12" fill="var(--bg-elevated)" stroke="#111115" stroke-width="3" stroke-dasharray="6 4" />
+                  <text x="100" y="300" text-anchor="middle" class="azores-inset-title">🌊 AZORES ARCHIPELAGO</text>
+                  <path class="continent continent--island" d="M 52 338 C 68 330, 96 332, 108 345 C 98 355, 66 353, 52 338 Z" />
+                  <circle cx="124" cy="348" r="6" class="continent continent--island" />
+                  <circle cx="44" cy="326" r="5" class="continent continent--island" />
+                </g>
+                <!-- Canary Islands Inset Box (Bottom Left) -->
+                <g class="azores-inset">
+                  <rect x="24" y="396" width="152" height="104" rx="12" fill="var(--bg-elevated)" stroke="#111115" stroke-width="3" stroke-dasharray="6 4" />
+                  <text x="100" y="416" text-anchor="middle" class="azores-inset-title">☀️ CANARY ISLANDS</text>
+                  <path class="continent continent--island" d="M 58 455 C 74 446, 102 448, 114 460 C 104 470, 72 468, 58 455 Z" />
+                  <circle cx="132" cy="456" r="7" class="continent continent--island" />
+                  <circle cx="44" cy="462" r="5" class="continent continent--island" />
                 </g>
               </g>
 
-              <text x="125" y="255" class="map-ocean-label">NORTH ATLANTIC</text>
-              <text x="425" y="498" class="map-ocean-label">MEDITERRANEAN SEA</text>
+              <text x="125" y="245" class="map-ocean-label">NORTH ATLANTIC</text>
+              <text x="415" y="504" class="map-ocean-label">MEDITERRANEAN SEA</text>
 
               <!-- EUROPE VIEW PINS (Rendered dynamically by app.js) -->
               <g id="europe-pins-layer"></g>
@@ -1669,11 +1688,13 @@
             <div class="passport-column">
               <div class="passport-col-header passport-col-header--traveled">
                 <span>✈️ Explored &amp; Traveled</span>
-                <span class="badge badge--yellow">14 Places</span>
+                <span class="badge badge--yellow">18 Places</span>
               </div>
               <div class="passport-pills" id="stamps-traveled">
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="japan">🇯🇵 Japan</button>
+                <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="iceland">🇮🇸 Iceland</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="azores">🇵🇹 Azores (Azzorre)</button>
+                <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="canaries">🇮🇨 Canary Islands</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="spain">🇪🇸 Spain</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="france">🇫🇷 France</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="switzerland">🇨🇭 Switzerland</button>
@@ -1682,9 +1703,11 @@
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="belgium">🇧🇪 Belgium</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="netherlands">🇳🇱 Netherlands (Holland)</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="england">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England (UK)</button>
+                <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="scotland">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland (UK)</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="dublin">🇮🇪 Dublin, Ireland</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="poland">🇵🇱 Poland</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="croatia">🇭🇷 Croatia</button>
+                <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="albania">🇦🇱 Albania</button>
                 <button type="button" class="stamp-pill stamp-pill--traveled" data-place-id="sweden">🇸🇪 Sweden</button>
               </div>
             </div>
