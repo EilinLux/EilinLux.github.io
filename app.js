@@ -385,7 +385,7 @@ tools = [save_new_user]
       shortLabel: '🇮🇹 Milan',
       category: 'lived',
       categoryLabel: '🏠 LIVED & WORKED (HOME BASE)',
-      desc: 'Current home base · Senior Cloud Architect & Data Engineer @ Datwave, GDG Cloud Milan speaker & AI community builder.',
+      desc: 'Current almost-home base · Senior Cloud Architect & Data Engineer @ Datwave, GDG Cloud Milan speaker & AI community builder.',
       wx: 498, wy: 152, showWorldLabel: true, labelDir: 'left',
       ex: 496, ey: 358, eLabelDir: 'left'
     },
@@ -395,7 +395,7 @@ tools = [save_new_user]
       shortLabel: '🇮🇹 Trento',
       category: 'lived',
       categoryLabel: '🏠 LIVED & STUDIED',
-      desc: 'Lived & studied here during my M.Sc. in Data Science at the University of Trento, surrounded by the Dolomites.',
+      desc: 'Lived & studied here during my Bachelor & Master in Data Science at the University of Trento, surrounded by the Dolomites.',
       wx: 504, wy: 144, showWorldLabel: false,
       ex: 534, ey: 332, eLabelDir: 'right'
     },
@@ -472,22 +472,12 @@ tools = [save_new_user]
       ex: 145, ey: 68, eLabelDir: 'right'
     },
     {
-      id: 'azores',
-      name: '🇵🇹 Azores (Azzorre), Portugal',
-      shortLabel: '🇵🇹 Azores',
-      category: 'traveled',
-      categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled to the volcanic Azores archipelago in the middle of the Atlantic—crater lakes, hydrangeas, and wild ocean.',
-      wx: 382, wy: 176, showWorldLabel: true, labelDir: 'left',
-      ex: 88, ey: 342, eLabelDir: 'right'
-    },
-    {
       id: 'canaries',
       name: '🇮🇨 Canary Islands, Spain',
       shortLabel: '🇮🇨 Canaries',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled to the sun-drenched Canary Islands off the Atlantic coast—volcanic peaks, dunes, and eternal spring.',
+      desc: 'Traveled to the sun-drenched Canary Islands off the Atlantic coast—volcanic peaks, dunes, and surfing waves.',
       wx: 415, wy: 213, showWorldLabel: true, labelDir: 'left',
       ex: 88, ey: 458, eLabelDir: 'right'
     },
@@ -516,8 +506,8 @@ tools = [save_new_user]
       name: '🇨🇭 Switzerland',
       shortLabel: '🇨🇭 Switzerland',
       category: 'traveled',
-      categoryLabel: '✈️ TRAVELED & SPOKE AT CONFERENCES',
-      desc: 'Traveled across Switzerland & spoke at Festival AI and Voxxed Days Ticino in Lugano!',
+      categoryLabel: '✈️ TRAVELED & SPEAKING AT CONFERENCES',
+      desc: 'Traveled across Switzerland & going to speak at Festival AI and Voxxed Days Ticino in Lugano!',
       wx: 490, wy: 144, showWorldLabel: false,
       ex: 456, ey: 314, eLabelDir: 'left'
     },
@@ -547,7 +537,7 @@ tools = [save_new_user]
       shortLabel: '🇧🇪 Belgium',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Explored Belgium—grand medieval guildhalls, canals, comic art, and artisanal chocolates.',
+      desc: 'Explored Belgium—grand medieval guildhalls, European Institutions, and artisanal chocolates.',
       wx: 476, wy: 124, showWorldLabel: false,
       ex: 416, ey: 232, eLabelDir: 'left'
     },
@@ -567,7 +557,7 @@ tools = [save_new_user]
       shortLabel: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 England',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Visited England—historic universities, vibrant cultural neighborhoods, and timeless landmarks.',
+      desc: 'Visited London and England—historic universities, vibrant cultural neighborhoods, and timeless landmarks.',
       wx: 444, wy: 118, showWorldLabel: false,
       ex: 358, ey: 196, eLabelDir: 'right'
     },
@@ -577,7 +567,7 @@ tools = [save_new_user]
       shortLabel: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled across Scotland—dramatic Highlands, historic castles, misty lochs, and Edinburgh’s gothic spires.',
+      desc: 'Traveled across Scotland—dramatic Highlands, historic castles, misty lochs, and Bengor city.',
       wx: 440, wy: 102, showWorldLabel: false,
       ex: 348, ey: 128, eLabelDir: 'right'
     },
@@ -587,7 +577,7 @@ tools = [save_new_user]
       shortLabel: '🇮🇪 Dublin',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Explored Dublin—literary heritage, Trinity College library, live music, and Georgian doors.',
+      desc: 'Explored Dublin—literary heritage, Trinity College library, live music, and enjoied reading "Dubliners" by James Joyce .',
       wx: 422, wy: 118, showWorldLabel: false,
       ex: 268, ey: 185, eLabelDir: 'left'
     },
@@ -597,7 +587,7 @@ tools = [save_new_user]
       shortLabel: '🇵🇱 Poland',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled to Poland—historic market squares, resilient heritage, and thriving tech hubs.',
+      desc: 'Traveled to Poland—historic market squares, resilient heritage, and thriving tech hubs, after my Yoga teacher training',
       wx: 534, wy: 118, showWorldLabel: false,
       ex: 682, ey: 224, eLabelDir: 'right'
     },
@@ -607,7 +597,7 @@ tools = [save_new_user]
       shortLabel: '🇭🇷 Croatia',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled along Croatia’s Adriatic coast and turquoise waterfalls—sunlit islands and ancient walled towns.',
+      desc: 'Traveled along Croatia’s Adriatic coast while living in Ljublaja, Slovenia.',
       wx: 524, wy: 156, showWorldLabel: false,
       ex: 632, ey: 372, eLabelDir: 'right'
     },
@@ -617,7 +607,7 @@ tools = [save_new_user]
       shortLabel: '🇸🇪 Sweden',
       category: 'traveled',
       categoryLabel: '✈️ TRAVELED & EXPLORED',
-      desc: 'Traveled to Sweden—Nordic archipelagos, fika culture, and Scandinavian design.',
+      desc: 'Traveled to Sweden—Lulea city, enjoied the cold, the snow, and the saunas.',
       wx: 518, wy: 84, showWorldLabel: true, labelDir: 'right',
       ex: 575, ey: 96, eLabelDir: 'right'
     },
@@ -669,7 +659,7 @@ tools = [save_new_user]
       shortLabel: '🇰🇭 Cambodia',
       category: 'wishlist',
       categoryLabel: '🧭 BUCKET LIST · WANT TO VISIT',
-      desc: 'Dreaming of sunrise over Angkor Wat, ancient jungle temples, and the Mekong River in Cambodia.',
+      desc: 'Dreaming of sunrise over Angkor Wat, ancient jungle temples, and the beaches in Cambodia.',
       wx: 768, wy: 256, showWorldLabel: true, labelDir: 'right',
       ex: null, ey: null
     },
