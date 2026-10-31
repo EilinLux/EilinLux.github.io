@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>45 · The final architecture</title>
+<link rel="stylesheet" href="_shared/anim.css">
+<!--
+  Slide 45 (docs/digital-assembly-line/speaker-notes.md, "45 · The final architecture"):
+  Full animated architectural breakdown, centered on the 1920×1080 canvas:
+  1. Starts with a single Monolithic agent.
+  2. Splits into 4 specialized agents: Gatekeeper (top), Cameriere (below), Registratore (left), Suggeritore (right/below).
+  3. Solid flow arrows connect them following the Sosta flowchart. All arrows in technical slate grey (#525f7a).
+  4. Tool badges:
+     - Gatekeeper: is_registered_user (above)
+     - Registratore: get_user_id, save_new_user (below)
+     - Cameriere: extract_user_profile (below)
+     Placed below so the lines to Firestore never cross or tangle.
+  5. Databases on the left in black & white agent card style with Firestore flame logo:
+     - FIRESTORE_APP_DB
+     - FIRESTORE_SESSION_DB with pink (state) badge
+     - Bidirectional grey dotted arrows, routed cleanly with zero intersections.
+  6. From Suggeritore, 3 sub-agents branch out: RoutePlannerAgent, SosteSearchAgent, MenuCheckerAgent.
+  7. On SosteSearchAgent, an overlay pink MCP Client connects to MCP Server, which connects to BigQuery (BQ card with logo).
+  8. Role transition:
+     - Suggeritore and Cameriere start as "SubAgent".
+     - When A2A Protocol appears, Cameriere transitions to "A2A Client" and Suggeritore to "A2A Server Agent".
+  Shared base: _shared/anim.css and _shared/anim.js.
+-->
+<style>
+  :root {
+    --loop: 24s;
+    --conn-grey: #525f7a;
+  }
+
+  .stage { position: absolute; inset: 0; animation-name: stage; }
+  .kicker { position: absolute; left: 80px; top: 40px; font-size: 52px; line-height: 1.1; }
+  .kicker em { font-style: normal; color: var(--pink); }
+
+  /* Monolith initial state */
+  .monolith {
+    position: absolute; left: 520px; top: 340px; width: 440px; height: 180px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 24px; background: #fff; border: 3px dashed var(--muted);
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.15);
+    opacity: 0; z-index: 20; animation-name: anim-mono;
+  }
+  .monolith img { width: 68px; height: 68px; }
+  .monolith b { font-family: var(--hand); font-size: 32px; margin-top: 8px; color: #555; }
+
+  /* Agent & DB cards sharing common aesthetic - Centered layout */
+  .ag-card, .db-card {
+    position: absolute; border-radius: 18px; background: #fff;
+    border: 2.5px solid var(--ink); box-shadow: 0 16px 32px -16px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 5; opacity: 0;
+  }
+  .ag-card img { width: 46px; height: 46px; }
+  .ag-card b { display: block; font-family: var(--hand); font-size: 24px; margin-top: 4px; }
+  .ag-card small { font-family: var(--mono); font-size: 13px; font-weight: 700; color: #737b8c; text-transform: uppercase; }
+
+  .ag-gate { left: 460px; top: 220px; width: 230px; height: 120px; border-color: var(--pink); animation-name: anim-gate; }
+  .ag-reg  { left: 300px; top: 480px; width: 210px; height: 120px; animation-name: anim-reg; }
+  .ag-cam  { left: 620px; top: 480px; width: 210px; height: 120px; animation-name: anim-cam; }
+  .ag-sug  { left: 1020px; top: 480px; width: 210px; height: 120px; border-color: var(--indigo); animation-name: anim-sug; }
+
+  /* Role transitions for Cameriere and Suggeritore */
+  .role-sub {
+    display: block; position: relative; height: 18px; margin-top: 4px; width: 100%;
+    font-family: var(--mono); font-size: 13px; font-weight: 700; text-transform: uppercase;
+  }
+  .role-sub .r-init {
+    position: absolute; left: 0; right: 0; top: 0;
+    color: #737b8c;
+    animation-name: anim-role-init;
+  }
+  .role-sub .r-a2a {
+    position: absolute; left: 0; right: 0; top: 0;
+    color: var(--indigo); font-weight: 800;
+    opacity: 0;
+    animation-name: anim-role-a2a;
+  }
+
+  /* Tool badges attached to agents */
+  .tool-badge {
+    position: absolute; padding: 4px 12px; border-radius: 8px;
+    background: #f1f5f9; border: 1.5px solid #cbd5e1;
+    font-family: var(--mono); font-size: 13px; font-weight: 700; color: #0f172a;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06); z-index: 8; opacity: 0;
+    white-space: nowrap; animation-name: anim-tools;
+  }
+  .tool-gate { left: 485px; top: 196px; }
+  .tool-reg  { left: 305px; top: 610px; }
+  .tool-cam  { left: 635px; top: 610px; }
+
+  /* Databases in black & white agent card style */
+  .db-card { animation-name: anim-dbs; color: var(--ink); }
+  .db-card .db-logo { width: 44px; height: 44px; margin-bottom: 2px; }
+  .db-card b { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .db-card small { font-family: var(--mono); font-size: 12px; font-weight: 600; color: #737b8c; text-transform: uppercase; margin-top: 3px; }
+
+  .db-app {
+    left: 60px; top: 200px; width: 200px; height: 120px;
+  }
+  .db-sess {
+    left: 300px; top: 680px; width: 210px; height: 120px;
+  }
+  .state-pill {
+    display: inline-block; margin-top: 4px;
+    background: var(--pink); color: #fff; font-family: var(--mono);
+    font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+  }
+
+  /* Sub-agents of Suggeritore */
+  .sub-ag {
+    position: absolute; width: 190px; height: 85px; border-radius: 14px;
+    background: #fff; border: 2px solid var(--indigo);
+    box-shadow: 0 12px 24px -12px rgba(0,0,0,0.12);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 5; opacity: 0; animation-name: anim-subags;
+  }
+  .sub-ag b { font-family: var(--hand); font-size: 19px; line-height: 1.1; }
+  .sub-ag small { font-family: var(--mono); font-size: 12px; color: var(--indigo); font-weight: 700; }
+  .sub-route { left: 1320px; top: 330px; }
+  .sub-soste { left: 1320px; top: 495px; height: 90px; }
+  .sub-menu  { left: 1320px; top: 650px; }
+
+  /* MCP Client overlay badge on SosteSearchAgent */
+  .mcp-client-badge {
+    position: absolute; left: 1335px; top: 470px; width: 120px; height: 26px;
+    background: var(--pink); color: #fff; border-radius: 6px;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(255,0,191,0.3); z-index: 9;
+    opacity: 0; animation-name: anim-mcp;
+  }
+
+  /* MCP Server box */
+  .mcp-server-box {
+    position: absolute; left: 1580px; top: 480px; width: 135px; height: 120px;
+    border-radius: 18px; background: var(--amber-bg); border: 2.5px solid var(--amber);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 12px 24px -12px rgba(247,144,9,0.25); z-index: 5;
+    opacity: 0; animation-name: anim-mcp;
+  }
+  .mcp-server-box span { font-size: 34px; line-height: 1; }
+  .mcp-server-box b { font-family: var(--mono); font-size: 15px; font-weight: 700; color: #b54708; margin-top: 6px; }
+  .mcp-server-box small { font-family: var(--mono); font-size: 12px; font-weight: 600; color: #b54708; }
+
+  /* BigQuery BQ card in agent card style */
+  .bq-card {
+    left: 1760px; top: 480px; width: 100px; height: 120px;
+    animation-name: anim-mcp;
+  }
+
+  /* A2A Protocol Box between Cameriere & Suggeritore */
+  .a2a-box {
+    position: absolute; left: 860px; top: 516px; width: 130px; height: 48px;
+    background: #eef2ff; border: 2.5px solid var(--indigo); border-radius: 999px;
+    color: var(--indigo); font-family: var(--mono); font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    box-shadow: 0 8px 20px -6px rgba(79,70,229,0.25); z-index: 10;
+    opacity: 0; animation-name: anim-a2a;
+  }
+
+  /* SVG Connections overlay - slate grey lines */
+  .svg-layer {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 4;
+  }
+  .conn-flow { stroke: var(--conn-grey); stroke-width: 2.8; fill: none; opacity: 0; animation-name: anim-flow; }
+  .conn-db   { stroke: var(--conn-grey); stroke-width: 2.5; stroke-dasharray: 3 6; stroke-linecap: round; fill: none; opacity: 0; animation-name: anim-dbs; }
+  .conn-sub  { stroke: var(--conn-grey); stroke-width: 2.5; fill: none; opacity: 0; animation-name: anim-subags; }
+  .conn-mcp  { stroke: var(--conn-grey); stroke-width: 2.8; fill: none; opacity: 0; animation-name: anim-mcp; }
+
+  /* Cameriere to Suggeritore connection: starts solid, transitions to dashed */
+  .bridge-solid {
+    stroke: var(--conn-grey); stroke-width: 3; fill: none;
+    opacity: 0; animation-name: anim-bridge-solid;
+  }
+  .bridge-dash {
+    stroke: var(--conn-grey); stroke-width: 3.5; stroke-dasharray: 8 6; fill: none;
+    opacity: 0; animation-name: anim-bridge-dash;
+  }
+
+  /* ---------- Timeline (24s loop) ----------
+     0–4%    scene in
+     4–12%   single monolithic agent in center
+     14–22%  monolith splits into 4 agents
+     22–32%  solid flowchart arrows connect Gatekeeper, Registratore, Cameriere, Suggeritore
+     32–42%  tool badges pop up on agents (Gatekeeper above, Registratore & Cameriere below)
+     42–52%  Firestore DBs appear with bidirectional dotted arrows and (state)
+     54–64%  3 sub-agents branch out from Suggeritore
+     64–72%  MCP Client, MCP Server, and BQ connect
+     74–82%  Cameriere-Suggeritore line becomes dashed, A2A box appears, role labels transition
+     82–95%  full final architecture holds
+     96–100% fade out */
+  @keyframes stage { 0% { opacity: 0 } 3%, 96% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes anim-mono { 0%, 4% { opacity: 0; transform: scale(.92) } 8%, 12% { opacity: 1; transform: none } 16%, 100% { opacity: 0; transform: scale(1.06) } }
+  @keyframes anim-gate { 0%, 14% { opacity: 0; transform: translateY(40px) scale(0.9) } 20%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-reg  { 0%, 14% { opacity: 0; transform: translate(120px, -40px) scale(0.9) } 20%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-cam  { 0%, 14% { opacity: 0; transform: translate(-60px, -40px) scale(0.9) } 20%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-sug  { 0%, 14% { opacity: 0; transform: translate(-140px, -20px) scale(0.9) } 20%, 100% { opacity: 1; transform: none } }
+
+  @keyframes anim-flow { 0%, 22% { opacity: 0; stroke-dashoffset: 400; stroke-dasharray: 400; } 28%, 100% { opacity: 1; stroke-dashoffset: 0; } }
+  @keyframes anim-bridge-solid { 0%, 22% { opacity: 0; } 28%, 72% { opacity: 1; } 75%, 100% { opacity: 0; } }
+  @keyframes anim-bridge-dash  { 0%, 74% { opacity: 0; } 78%, 100% { opacity: 1; } }
+
+  @keyframes anim-tools { 0%, 32% { opacity: 0; transform: translateY(8px) } 38%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-dbs { 0%, 42% { opacity: 0; transform: translateX(-16px) } 48%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-subags { 0%, 54% { opacity: 0; transform: translateX(-20px) } 60%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-mcp { 0%, 64% { opacity: 0; transform: scale(.92) } 70%, 100% { opacity: 1; transform: none } }
+  @keyframes anim-a2a { 0%, 76% { opacity: 0; transform: scale(.7) } 80% { opacity: 1; transform: scale(1.08) } 83%, 100% { opacity: 1; transform: scale(1) } }
+
+  @keyframes anim-role-init {
+    0%, 75% { opacity: 1; transform: none; }
+    78%, 100% { opacity: 0; transform: translateY(-4px); }
+  }
+  @keyframes anim-role-a2a {
+    0%, 76% { opacity: 0; transform: translateY(4px); }
+    80%, 100% { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="stage">
+    <div class="kicker"><small>Google · 2026</small>The final<br><em>Architecture</em></div>
+
+    <!-- 1. Single monolithic agent at start -->
+    <div class="monolith">
+      <img src="_shared/img/robot-head.png" alt="">
+      <b>Single Monolithic Agent</b>
+    </div>
+
+    <!-- 2. Four agents (Centered) -->
+    <div class="ag-card ag-gate">
+      <img src="_shared/img/robot-head.png" alt="">
+      <b>Gatekeeper</b>
+      <small>Coordinator Agent</small>
+    </div>
+
+    <div class="ag-card ag-reg">
+      <img src="_shared/img/robot-head.png" alt="">
+      <b>Registratore</b>
+      <small>SubAgent</small>
+    </div>
+
+    <div class="ag-card ag-cam">
+      <img src="_shared/img/robot-head.png" alt="">
+      <b>Cameriere</b>
+      <span class="role-sub">
+        <span class="r-init">SubAgent</span>
+        <span class="r-a2a">A2A Client</span>
+      </span>
+    </div>
+
+    <div class="ag-card ag-sug">
+      <img src="_shared/img/robot-head.png" alt="">
+      <b>Suggeritore</b>
+      <span class="role-sub">
+        <span class="r-init">SubAgent</span>
+        <span class="r-a2a">A2A Server Agent</span>
+      </span>
+    </div>
+
+    <!-- 3. Tool badges (Gatekeeper above, Registratore & Cameriere below) -->
+    <div class="tool-badge tool-gate">🛠️ is_registered_user</div>
+    <div class="tool-badge tool-reg">🛠️ get_user_id &middot; save_new_user</div>
+    <div class="tool-badge tool-cam">🛠️ extract_user_profile</div>
+
+    <!-- 4. Databases on left (Firestore in clean B&W card style with flame logo) -->
+    <div class="db-card db-app">
+      <svg class="db-logo" viewBox="0 0 64 64">
+        <path fill="#FFA000" d="M12 44 L18 8 A 2 2 0 0 1 21.6 7.5 L 30 24 L 12 44 Z"/>
+        <path fill="#F57C00" d="M38 18 L 32 8 A 2 2 0 0 0 28.5 8 L 12 44 L 38 18 Z"/>
+        <path fill="#FFCA28" d="M52 44 L 46 8 A 2 2 0 0 0 42.4 7.5 L 12 44 L 30 60 A 4 4 0 0 0 34 60 L 52 44 Z"/>
+      </svg>
+      <b>FIRESTORE_APP_DB</b>
+      <small>User Registry</small>
+    </div>
+
+    <div class="db-card db-sess">
+      <svg class="db-logo" viewBox="0 0 64 64">
+        <path fill="#FFA000" d="M12 44 L18 8 A 2 2 0 0 1 21.6 7.5 L 30 24 L 12 44 Z"/>
+        <path fill="#F57C00" d="M38 18 L 32 8 A 2 2 0 0 0 28.5 8 L 12 44 L 38 18 Z"/>
+        <path fill="#FFCA28" d="M52 44 L 46 8 A 2 2 0 0 0 42.4 7.5 L 12 44 L 30 60 A 4 4 0 0 0 34 60 L 52 44 Z"/>
+      </svg>
+      <b>FIRESTORE_SESSION_DB</b>
+      <small>Session Memory &bull; <span class="state-pill">(state)</span></small>
+    </div>
+
+    <!-- 5. Sub-agents of Suggeritore -->
+    <div class="sub-ag sub-route">
+      <b>RoutePlannerAgent</b>
+      <small>Routing &middot; Waypoints</small>
+    </div>
+
+    <div class="sub-ag sub-soste">
+      <b>SosteSearchAgent</b>
+      <small>Dining &middot; Refueling</small>
+    </div>
+
+    <div class="sub-ag sub-menu">
+      <b>MenuCheckerAgent</b>
+      <small>Menus &middot; Dietary</small>
+    </div>
+
+    <!-- 6. MCP Client, MCP Server, BigQuery -->
+    <div class="mcp-client-badge">MCP Client</div>
+
+    <div class="mcp-server-box">
+      <span>🗄️</span>
+      <b>MCP Server</b>
+      <small>Tools Runtime</small>
+    </div>
+
+    <!-- BQ in agent card style with official BigQuery vector logo -->
+    <div class="db-card bq-card">
+      <svg class="db-logo" viewBox="0 0 64 64">
+        <circle cx="28" cy="28" r="22" fill="#E8F0FE" stroke="#4285F4" stroke-width="4"/>
+        <ellipse cx="28" cy="18" rx="14" ry="5" fill="#4285F4"/>
+        <path d="M 14 18 v 8 c 0 3 6.3 5 14 5 s 14 -2 14 -5 v -8" fill="#669DF6" stroke="#4285F4" stroke-width="2"/>
+        <path d="M 14 26 v 8 c 0 3 6.3 5 14 5 s 14 -2 14 -5 v -8" fill="#4285F4"/>
+        <line x1="44" y1="44" x2="58" y2="58" stroke="#1A73E8" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+      <b>BigQuery</b>
+      <small>db-stops</small>
+    </div>
+
+    <!-- 7. A2A Protocol box -->
+    <div class="a2a-box">A2A Protocol</div>
+
+    <!-- SVG Connections in slate grey (#525f7a) -->
+    <svg class="svg-layer" viewBox="0 0 1920 1080">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#525f7a"/>
+        </marker>
+        <marker id="arr-start" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 8 1.5 L 0 5 L 8 8.5 z" fill="#525f7a"/>
+        </marker>
+      </defs>
+
+      <!-- Flowchart connections (Gatekeeper -> Registratore, Gatekeeper -> Cameriere, Registratore -> Cameriere) -->
+      <path class="conn-flow" d="M 520 340 L 405 480" marker-end="url(#arr)" />
+      <path class="conn-flow" d="M 630 340 L 725 480" marker-end="url(#arr)" />
+      <path class="conn-flow" d="M 510 540 L 620 540" marker-end="url(#arr)" />
+
+      <!-- Cameriere -> Suggeritore connection: solid initially, then dashed -->
+      <line class="bridge-solid" x1="830" y1="540" x2="1020" y2="540" marker-end="url(#arr)" />
+      <line class="bridge-dash" x1="830" y1="540" x2="1020" y2="540" marker-end="url(#arr)" />
+
+      <!-- Database bidirectional dotted connections in grey, completely disentangled -->
+      <!-- 1. is_registered_user (top) <-> FIRESTORE_APP_DB -->
+      <path class="conn-db" d="M 485 210 C 390 210, 350 260, 260 260" marker-start="url(#arr-start)" marker-end="url(#arr)" />
+
+      <!-- 2. get_user_id & save_new_user (below Registratore) <-> FIRESTORE_SESSION_DB directly below -->
+      <line class="conn-db" x1="405" y1="636" x2="405" y2="680" marker-start="url(#arr-start)" marker-end="url(#arr)" />
+
+      <!-- 3. extract_user_profile (below Cameriere) <-> FIRESTORE_SESSION_DB (right side) -->
+      <path class="conn-db" d="M 645 636 C 570 636, 540 740, 510 740" marker-start="url(#arr-start)" marker-end="url(#arr)" />
+
+      <!-- 4. is_registered_user (Gatekeeper) <-> FIRESTORE_SESSION_DB (left side) -->
+      <path class="conn-db" d="M 485 210 C 330 210, 260 260, 260 360 C 260 540, 240 720, 300 720" marker-start="url(#arr-start)" marker-end="url(#arr)" />
+
+      <!-- Suggeritore -> 3 Sub-agents in grey -->
+      <path class="conn-sub" d="M 1230 520 C 1270 520, 1280 372, 1320 372" marker-end="url(#arr)" />
+      <line class="conn-sub" x1="1230" y1="540" x2="1320" y2="540" marker-end="url(#arr)" />
+      <path class="conn-sub" d="M 1230 560 C 1270 560, 1280 692, 1320 692" marker-end="url(#arr)" />
+
+      <!-- SosteSearchAgent -> MCP Server -> BQ in grey -->
+      <line class="conn-mcp" x1="1510" y1="540" x2="1580" y2="540" marker-end="url(#arr)" />
+      <line class="conn-mcp" x1="1715" y1="540" x2="1760" y2="540" marker-end="url(#arr)" />
+    </svg>
+  </div>
+</div>
+<script src="_shared/anim.js"></script>
+</body>
+</html>

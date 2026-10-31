@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · What are we gonna do?</title>
+<link rel="stylesheet" href="_shared/anim.css">
+<!--
+  Slide 02 of the original deck (docs/digital-assembly-line/speaker-notes.md, "02 · What are we gonna do?").
+  Left: the question and the goal (a production-ready app built with Google ADK).
+  Right: the full animated architecture formatted vertically ("per lungo"), running at high tempo (12s loop):
+  - Layer 1 (Top): Sosta Runner (Gatekeeper, Registratore, Cameriere + Firestore DBs + tools)
+  - Layer 2 (Mid): A2A Protocol bridge
+  - Layer 3 (Low): Suggeritore Runner + 3 Sub-agents
+  - Layer 4 (Bottom): FastMCP Server + BigQuery
+  Shared base: _shared/anim.css and _shared/anim.js.
+-->
+<style>
+  :root {
+    --loop: 12s;
+    --conn-grey: #525f7a;
+  }
+
+  .stage { position: absolute; inset: 0; animation-name: stage; }
+
+  .eyebrow { position: absolute; left: 110px; top: 100px; font-size: 22px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #8a93a6; opacity: 0; animation-name: fade1; }
+  .title { position: absolute; left: 110px; top: 260px; width: 840px; margin: 0; font-family: var(--hand); font-size: 96px; font-weight: 400; line-height: 1.1; }
+  .title > span { display: block; opacity: 0; }
+  .title .l1 { animation-name: line1; }
+  .title .l2 { animation-name: line2; }
+  .sub { position: absolute; left: 110px; top: 580px; width: 780px; font-size: 34px; line-height: 1.38; opacity: 0; animation-name: sub; }
+  .sub b { color: var(--pink); }
+
+  /* Architecture diagram: vertical card container on the right ("per lungo") */
+  .diagram {
+    position: absolute; left: 980px; top: 60px; width: 860px; height: 950px;
+    padding: 0; overflow: hidden; opacity: 0; animation-name: diagram;
+    background: #fafbff; border: 1.5px solid #edf0f7;
+    box-shadow: 0 24px 48px -20px rgba(0,0,0,0.14);
+  }
+  .inner-stage { position: absolute; inset: 0; width: 860px; height: 950px; }
+
+  /* Monolith initial state */
+  .v-mono {
+    position: absolute; left: 230px; top: 75px; width: 400px; height: 130px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 20px; background: #fff; border: 3px dashed var(--muted);
+    box-shadow: 0 16px 32px -16px rgba(0,0,0,0.15);
+    opacity: 0; z-index: 20; animation-name: v-anim-mono;
+  }
+  .v-mono img { width: 48px; height: 48px; }
+  .v-mono b { font-family: var(--hand); font-size: 26px; margin-top: 4px; color: #555; }
+
+  /* Cards aesthetic inside vertical layout */
+  .v-card {
+    position: absolute; border-radius: 14px; background: #fff;
+    border: 2px solid var(--ink); box-shadow: 0 10px 24px -10px rgba(0,0,0,0.12);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 5; opacity: 0;
+  }
+  .v-card img { width: 34px; height: 34px; }
+  .v-card b { display: block; font-family: var(--hand); font-size: 19px; margin-top: 2px; }
+  .v-card small { font-family: var(--mono); font-size: 11px; font-weight: 700; color: #737b8c; text-transform: uppercase; }
+
+  /* Layer 1: Sosta Runner */
+  .v-gate { left: 330px; top: 25px; width: 200px; height: 85px; border-color: var(--pink); animation-name: v-anim-gate; }
+  .v-reg  { left: 220px; top: 145px; width: 195px; height: 85px; animation-name: v-anim-reg; }
+  .v-cam  { left: 445px; top: 145px; width: 195px; height: 85px; animation-name: v-anim-cam; }
+
+  /* Role transitions */
+  .v-role-sub {
+    display: block; position: relative; height: 15px; margin-top: 2px; width: 100%;
+    font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+  }
+  .v-role-sub .r-init { position: absolute; left: 0; right: 0; top: 0; color: #737b8c; animation-name: v-role-init; }
+  .v-role-sub .r-a2a  { position: absolute; left: 0; right: 0; top: 0; color: var(--indigo); font-weight: 800; opacity: 0; animation-name: v-role-a2a; }
+
+  /* Tool badges */
+  .v-tool {
+    position: absolute; padding: 2px 8px; border-radius: 6px;
+    background: #f1f5f9; border: 1.2px solid #cbd5e1;
+    font-family: var(--mono); font-size: 11px; font-weight: 700; color: #0f172a;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); z-index: 8; opacity: 0;
+    white-space: nowrap; animation-name: v-anim-tools;
+  }
+  .v-tool-gate { left: 345px; top: 6px; }
+  .v-tool-reg  { left: 220px; top: 234px; }
+  .v-tool-cam  { left: 450px; top: 234px; }
+
+  /* Databases */
+  .v-db {
+    animation-name: v-anim-dbs; color: var(--ink);
+  }
+  .v-db .db-logo { width: 32px; height: 32px; margin-bottom: 2px; }
+  .v-db b { font-family: var(--mono); font-size: 12px; font-weight: 700; line-height: 1.1; }
+  .v-db small { font-family: var(--mono); font-size: 10px; font-weight: 600; color: #737b8c; text-transform: uppercase; margin-top: 2px; }
+
+  .v-db-app  { left: 25px; top: 25px; width: 180px; height: 85px; }
+  .v-db-sess { left: 25px; top: 272px; width: 180px; height: 86px; }
+  .v-state-pill {
+    display: inline-block; margin-top: 2px;
+    background: var(--pink); color: #fff; font-family: var(--mono);
+    font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* Layer 2: A2A Protocol Box */
+  .v-a2a-box {
+    position: absolute; left: 480px; top: 295px; width: 120px; height: 40px;
+    background: #eef2ff; border: 2px solid var(--indigo); border-radius: 999px;
+    color: var(--indigo); font-family: var(--mono); font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    box-shadow: 0 8px 16px -6px rgba(79,70,229,0.25); z-index: 10;
+    opacity: 0; animation-name: v-anim-a2a;
+  }
+
+  /* Layer 3: Suggeritore & Sub-agents */
+  .v-sug { left: 330px; top: 375px; width: 200px; height: 85px; border-color: var(--indigo); animation-name: v-anim-sug; }
+
+  .v-sub-ag {
+    position: absolute; width: 185px; height: 75px; border-radius: 12px;
+    background: #fff; border: 1.8px solid var(--indigo);
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 5; opacity: 0; animation-name: v-anim-subags;
+  }
+  .v-sub-ag b { font-family: var(--hand); font-size: 16px; line-height: 1.1; }
+  .v-sub-ag small { font-family: var(--mono); font-size: 10px; color: var(--indigo); font-weight: 700; }
+  .v-sub-route { left: 25px; top: 500px; }
+  .v-sub-soste { left: 330px; top: 500px; width: 200px; }
+  .v-sub-menu  { left: 550px; top: 500px; }
+
+  .v-mcp-client {
+    position: absolute; left: 370px; top: 482px; width: 105px; height: 22px;
+    background: var(--pink); color: #fff; border-radius: 5px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 8px rgba(255,0,191,0.25); z-index: 9;
+    opacity: 0; animation-name: v-anim-mcp;
+  }
+
+  /* Layer 4: MCP Server & BigQuery */
+  .v-mcp-server {
+    position: absolute; left: 330px; top: 625px; width: 200px; height: 85px;
+    border-radius: 14px; background: var(--amber-bg); border: 2px solid var(--amber);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 16px -8px rgba(247,144,9,0.2); z-index: 5;
+    opacity: 0; animation-name: v-anim-mcp;
+  }
+  .v-mcp-server span { font-size: 26px; line-height: 1; }
+  .v-mcp-server b { font-family: var(--mono); font-size: 14px; font-weight: 700; color: #b54708; margin-top: 3px; }
+
+  .v-bq {
+    left: 360px; top: 755px; width: 140px; height: 85px;
+    animation-name: v-anim-mcp;
+  }
+
+  /* SVG Connections */
+  .v-svg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 4;
+  }
+  .v-conn-flow { stroke: var(--conn-grey); stroke-width: 2.4; fill: none; opacity: 0; animation-name: v-anim-flow; }
+  .v-conn-db   { stroke: var(--conn-grey); stroke-width: 2.2; stroke-dasharray: 3 5; stroke-linecap: round; fill: none; opacity: 0; animation-name: v-anim-dbs; }
+  .v-conn-sub  { stroke: var(--conn-grey); stroke-width: 2.2; fill: none; opacity: 0; animation-name: v-anim-subags; }
+  .v-conn-mcp  { stroke: var(--conn-grey); stroke-width: 2.4; fill: none; opacity: 0; animation-name: v-anim-mcp; }
+
+  .v-bridge-solid {
+    stroke: var(--conn-grey); stroke-width: 2.6; fill: none;
+    opacity: 0; animation-name: v-anim-bridge-solid;
+  }
+  .v-bridge-dash {
+    stroke: var(--conn-grey); stroke-width: 3; stroke-dasharray: 6 5; fill: none;
+    opacity: 0; animation-name: v-anim-bridge-dash;
+  }
+
+  /* ---------- Timeline (12s loop - high tempo) ----------
+     0–4%    scene in             4–8%   eyebrow & titles (8–18%)
+     10–18%  monolith in right card
+     18–26%  monolith splits into Gatekeeper, Registratore, Cameriere, Suggeritore
+     26–36%  flowchart arrows & tool badges
+     36–48%  Firestore DBs appear with dotted arrows
+     48–60%  Suggeritore branches into 3 sub-agents
+     60–72%  MCP Client, MCP Server, BigQuery
+     72–82%  A2A dashed line & box appear, role titles transition
+     82–95%  full vertical architecture holds
+     96–100% fade out */
+  @keyframes stage { 0% { opacity: 0 } 3%, 96% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes fade1 { 0%, 3% { opacity: 0 } 8%, 100% { opacity: 1 } }
+  @keyframes line1 { 0%, 4% { opacity: 0; transform: translateY(20px) } 10%, 100% { opacity: 1; transform: none } }
+  @keyframes line2 { 0%, 9% { opacity: 0; transform: translateY(20px) } 15%, 100% { opacity: 1; transform: none } }
+  @keyframes sub { 0%, 14% { opacity: 0 } 20%, 100% { opacity: 1 } }
+  @keyframes diagram { 0%, 8% { opacity: 0; transform: translateX(24px) } 14%, 100% { opacity: 1; transform: none } }
+
+  @keyframes v-anim-mono { 0%, 10% { opacity: 0; transform: scale(.92) } 14%, 18% { opacity: 1; transform: none } 22%, 100% { opacity: 0; transform: scale(1.05) } }
+  @keyframes v-anim-gate { 0%, 18% { opacity: 0; transform: translateY(24px) } 24%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-reg  { 0%, 18% { opacity: 0; transform: translate(60px, -20px) } 24%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-cam  { 0%, 18% { opacity: 0; transform: translate(-60px, -20px) } 24%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-sug  { 0%, 18% { opacity: 0; transform: translateY(-30px) } 24%, 100% { opacity: 1; transform: none } }
+
+  @keyframes v-anim-flow { 0%, 24% { opacity: 0 } 30%, 100% { opacity: 1 } }
+  @keyframes v-anim-bridge-solid { 0%, 24% { opacity: 0 } 30%, 70% { opacity: 1 } 73%, 100% { opacity: 0 } }
+  @keyframes v-anim-bridge-dash  { 0%, 72% { opacity: 0 } 76%, 100% { opacity: 1 } }
+
+  @keyframes v-anim-tools { 0%, 28% { opacity: 0; transform: scale(.9) } 34%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-dbs   { 0%, 36% { opacity: 0; transform: translateX(-14px) } 42%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-subags { 0%, 48% { opacity: 0; transform: translateY(-16px) } 54%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-mcp   { 0%, 60% { opacity: 0; transform: scale(.9) } 66%, 100% { opacity: 1; transform: none } }
+  @keyframes v-anim-a2a   { 0%, 72% { opacity: 0; transform: scale(.7) } 76% { opacity: 1; transform: scale(1.08) } 79%, 100% { opacity: 1; transform: scale(1) } }
+
+  @keyframes v-role-init { 0%, 72% { opacity: 1; transform: none } 75%, 100% { opacity: 0; transform: translateY(-3px) } }
+  @keyframes v-role-a2a  { 0%, 73% { opacity: 0; transform: translateY(3px) } 77%, 100% { opacity: 1; transform: none } }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="stage">
+    <div class="eyebrow">Google · 2026</div>
+    <h1 class="title"><span class="l1">What are we</span><span class="l2"><span class="underline-pink">gonna do?</span></span></h1>
+    <div class="sub">Build a <b>production-ready application</b> using Google Agent Developer Kit (ADK)</div>
+
+    <!-- The tall vertical architecture container ("per lungo") replacing the old image -->
+    <div class="card diagram">
+      <div class="inner-stage">
+        <!-- 1. Monolith initial state -->
+        <div class="v-mono">
+          <img src="_shared/img/robot-head.png" alt="">
+          <b>Single Monolithic Agent</b>
+        </div>
+
+        <!-- 2. Layer 1: Sosta Runner Agents -->
+        <div class="v-card v-gate">
+          <img src="_shared/img/robot-head.png" alt="">
+          <b>Gatekeeper</b>
+          <small>Coordinator Agent</small>
+        </div>
+
+        <div class="v-card v-reg">
+          <img src="_shared/img/robot-head.png" alt="">
+          <b>Registratore</b>
+          <small>SubAgent</small>
+        </div>
+
+        <div class="v-card v-cam">
+          <img src="_shared/img/robot-head.png" alt="">
+          <b>Cameriere</b>
+          <span class="v-role-sub">
+            <span class="r-init">SubAgent</span>
+            <span class="r-a2a">A2A Client</span>
+          </span>
+        </div>
+
+        <!-- Tool Badges -->
+        <div class="v-tool v-tool-gate">🛠️ is_registered_user</div>
+        <div class="v-tool v-tool-reg">🛠️ get_user_id &middot; save_new_user</div>
+        <div class="v-tool v-tool-cam">🛠️ extract_user_profile</div>
+
+        <!-- Firestore DBs -->
+        <div class="v-card v-db v-db-app">
+          <svg class="db-logo" viewBox="0 0 64 64">
+            <path fill="#FFA000" d="M12 44 L18 8 A 2 2 0 0 1 21.6 7.5 L 30 24 L 12 44 Z"/>
+            <path fill="#F57C00" d="M38 18 L 32 8 A 2 2 0 0 0 28.5 8 L 12 44 L 38 18 Z"/>
+            <path fill="#FFCA28" d="M52 44 L 46 8 A 2 2 0 0 0 42.4 7.5 L 12 44 L 30 60 A 4 4 0 0 0 34 60 L 52 44 Z"/>
+          </svg>
+          <b>FIRESTORE_APP_DB</b>
+          <small>User Registry</small>
+        </div>
+
+        <div class="v-card v-db v-db-sess">
+          <svg class="db-logo" viewBox="0 0 64 64">
+            <path fill="#FFA000" d="M12 44 L18 8 A 2 2 0 0 1 21.6 7.5 L 30 24 L 12 44 Z"/>
+            <path fill="#F57C00" d="M38 18 L 32 8 A 2 2 0 0 0 28.5 8 L 12 44 L 38 18 Z"/>
+            <path fill="#FFCA28" d="M52 44 L 46 8 A 2 2 0 0 0 42.4 7.5 L 12 44 L 30 60 A 4 4 0 0 0 34 60 L 52 44 Z"/>
+          </svg>
+          <b>FIRESTORE_SESSION_DB</b>
+          <small>Session Memory &bull; <span class="v-state-pill">(state)</span></small>
+        </div>
+
+        <!-- Layer 2: A2A Protocol Box -->
+        <div class="v-a2a-box">A2A Protocol</div>
+
+        <!-- Layer 3: Suggeritore Runner -->
+        <div class="v-card v-sug">
+          <img src="_shared/img/robot-head.png" alt="">
+          <b>Suggeritore</b>
+          <span class="v-role-sub">
+            <span class="r-init">SubAgent</span>
+            <span class="r-a2a">A2A Server Agent</span>
+          </span>
+        </div>
+
+        <!-- 3 Sub-agents of Suggeritore -->
+        <div class="v-sub-ag v-sub-route">
+          <b>RoutePlannerAgent</b>
+          <small>Routing</small>
+        </div>
+
+        <div class="v-sub-ag v-sub-soste">
+          <b>SosteSearchAgent</b>
+          <small>Dining &middot; Refueling</small>
+        </div>
+
+        <div class="v-sub-ag v-sub-menu">
+          <b>MenuCheckerAgent</b>
+          <small>Menu &middot; Dietary</small>
+        </div>
+
+        <div class="v-mcp-client">MCP Client</div>
+
+        <!-- Layer 4: MCP Server & BigQuery -->
+        <div class="v-mcp-server">
+          <span>🗄️</span>
+          <b>MCP Server</b>
+        </div>
+
+        <div class="v-card v-db v-bq">
+          <svg class="db-logo" viewBox="0 0 64 64">
+            <circle cx="28" cy="28" r="22" fill="#E8F0FE" stroke="#4285F4" stroke-width="4"/>
+            <ellipse cx="28" cy="18" rx="14" ry="5" fill="#4285F4"/>
+            <path d="M 14 18 v 8 c 0 3 6.3 5 14 5 s 14 -2 14 -5 v -8" fill="#669DF6" stroke="#4285F4" stroke-width="2"/>
+            <path d="M 14 26 v 8 c 0 3 6.3 5 14 5 s 14 -2 14 -5 v -8" fill="#4285F4"/>
+            <line x1="44" y1="44" x2="58" y2="58" stroke="#1A73E8" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+          <b>BigQuery</b>
+          <small>db-stops</small>
+        </div>
+
+        <!-- SVG Connections in slate grey -->
+        <svg class="v-svg" viewBox="0 0 860 950">
+          <defs>
+            <marker id="v-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#525f7a"/>
+            </marker>
+            <marker id="v-arr-start" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 8 1.5 L 0 5 L 8 8.5 z" fill="#525f7a"/>
+            </marker>
+          </defs>
+
+          <!-- Flowchart connections (Gatekeeper -> Registratore & Cameriere) -->
+          <path class="v-conn-flow" d="M 380 110 L 317 145" marker-end="url(#v-arr)" />
+          <path class="v-conn-flow" d="M 480 110 L 542 145" marker-end="url(#v-arr)" />
+          <path class="v-conn-flow" d="M 415 187 L 445 187" marker-end="url(#v-arr)" />
+
+          <!-- Cameriere -> Suggeritore (starts solid, becomes dashed) -->
+          <path class="v-bridge-solid" d="M 542 230 C 542 300, 480 340, 430 375" marker-end="url(#v-arr)" />
+          <path class="v-bridge-dash"  d="M 542 230 C 542 300, 480 340, 430 375" marker-end="url(#v-arr)" />
+
+          <!-- Dotted bidirectional connections to Firestore -->
+          <path class="v-conn-db" d="M 345 20 C 280 20, 240 67, 205 67" marker-start="url(#v-arr-start)" marker-end="url(#v-arr)" />
+          <path class="v-conn-db" d="M 345 25 C 240 25, 210 90, 210 140 C 210 200, 150 210, 150 272" marker-start="url(#v-arr-start)" marker-end="url(#v-arr)" />
+          <path class="v-conn-db" d="M 220 246 C 210 246, 205 275, 205 300" marker-start="url(#v-arr-start)" marker-end="url(#v-arr)" />
+          <path class="v-conn-db" d="M 450 248 C 360 248, 300 330, 205 330" marker-start="url(#v-arr-start)" marker-end="url(#v-arr)" />
+
+          <!-- Suggeritore -> 3 Sub-agents -->
+          <path class="v-conn-sub" d="M 360 460 C 300 470, 200 480, 117 500" marker-end="url(#v-arr)" />
+          <line class="v-conn-sub" x1="430" y1="460" x2="430" y2="500" marker-end="url(#v-arr)" />
+          <path class="v-conn-sub" d="M 500 460 C 560 470, 600 480, 642 500" marker-end="url(#v-arr)" />
+
+          <!-- SosteSearchAgent -> MCP Server -> BigQuery -->
+          <line class="v-conn-mcp" x1="430" y1="580" x2="430" y2="625" marker-end="url(#v-arr)" />
+          <line class="v-conn-mcp" x1="430" y1="710" x2="430" y2="755" marker-end="url(#v-arr)" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="_shared/anim.js"></script>
+</body>
+</html>

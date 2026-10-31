@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30 · Why decouple?</title>
+<link rel="stylesheet" href="_shared/anim.css">
+<!--
+  Slide 30 of the original deck (docs/digital-assembly-line/speaker-notes.md, "30 · Why decouple?").
+  Statement slide: "Why should we decouple the architecture into a Distributed Multi-Agent System?"
+  1. Under the question, one monolithic block splits into four separate agents.
+  2. The agents are grouped 2-by-2 in containers (Container 1 and Container 2).
+  3. A dashed connection with "A2A Protocol" connects the two containers.
+  4. From Agent 4 / Container 2, an arrow connects to MCP Server, which in turn connects to Database (BigQuery).
+  Shared base (style, scaling, controls): _shared/anim.css and _shared/anim.js.
+-->
+<style>
+  :root { --loop: 14s; }
+
+  .stage { position: absolute; inset: 0; animation-name: stage; }
+  .eyebrow { position: absolute; left: 80px; top: 56px; font-size: 20px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: #8a93a6; opacity: 0; animation-name: eyebrow; }
+
+  .q { position: absolute; left: 100px; right: 100px; top: 160px; margin: 0; text-align: center; font-family: var(--hand); font-size: 76px; font-weight: 400; line-height: 1.25; }
+  .q > span { display: block; opacity: 0; }
+  .q .l1 { animation-name: l1; }
+  .q .l2 { animation-name: l2; }
+  .q .underline-pink::after { width: 0; right: auto; animation-name: underline; }
+
+  /* One block → four agents */
+  .mono {
+    position: absolute; left: 560px; top: 605px; width: 520px; height: 180px;
+    display: grid; place-items: center; border-radius: 24px;
+    background: #eef1f6; border: 2.5px dashed var(--muted);
+    font-size: 30px; font-weight: 600; color: #8a93a6;
+    opacity: 0; animation-name: mono;
+  }
+
+  /* The 4 agents */
+  .ag {
+    position: absolute; top: 625px; width: 180px; height: 160px; padding: 20px 0;
+    text-align: center; opacity: 0; z-index: 2;
+    border: 2.5px solid var(--pink); border-radius: 20px;
+  }
+  .ag img { width: 64px; height: 64px; }
+  .ag b { display: block; margin-top: 6px; font-family: var(--hand); font-size: 26px; font-weight: 400; }
+
+  .a1 { left: 190px; animation-name: a1; }
+  .a2 { left: 395px; animation-name: a2; }
+  .a3 { left: 760px; animation-name: a3; }
+  .a4 { left: 965px; animation-name: a4; }
+
+  /* Two Containers grouping agents 2-by-2 */
+  .cont {
+    position: absolute; top: 590px; width: 430px; height: 230px;
+    border-radius: 26px; border: 3px dashed var(--ink);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 16px 36px -16px rgba(0,0,0,0.12);
+    opacity: 0; z-index: 1; animation-name: cont-in;
+  }
+  .c-left  { left: 170px; }
+  .c-right { left: 740px; }
+  .c-tag {
+    position: absolute; left: 24px; top: -16px;
+    background: var(--ink); color: #fff;
+    font-family: var(--mono); font-size: 16px; font-weight: 700;
+    padding: 4px 16px; border-radius: 999px;
+  }
+
+  /* A2A Protocol connection between Container 1 & Container 2 */
+  .a2a-conn {
+    position: absolute; left: 600px; top: 705px; width: 140px; height: 0;
+    border-top: 3.5px dashed var(--indigo);
+    opacity: 0; z-index: 3;
+    animation-name: a2a-in;
+  }
+  .a2a-conn span {
+    position: absolute; left: 50%; top: -17px;
+    transform: translateX(-50%);
+    background: #eef2ff; color: var(--indigo); border: 2px solid var(--indigo);
+    font-family: var(--mono); font-size: 15px; font-weight: 700;
+    padding: 3px 12px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* External blocks: MCP & Database */
+  .arrow-conn {
+    position: absolute; top: 705px; height: 0;
+    border-top: 3.5px solid var(--ink);
+    opacity: 0; z-index: 3;
+    transform-origin: left;
+  }
+  .arrow-conn::after {
+    content: ""; position: absolute; right: -2px; top: -8px;
+    width: 0; height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid var(--ink);
+  }
+  .arr-mcp { left: 1170px; width: 90px; animation-name: arr-mcp; }
+  .arr-db  { left: 1460px; width: 90px; animation-name: arr-db; }
+
+  .ext-box {
+    position: absolute; top: 625px; width: 200px; height: 160px;
+    border-radius: 20px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    opacity: 0; z-index: 2;
+  }
+  .b-icon { font-size: 42px; line-height: 1; }
+  .b-title { display: block; font-size: 24px; font-weight: 700; margin-top: 6px; }
+  .b-sub { font-size: 15px; font-weight: 600; margin-top: 2px; }
+
+  .b-mcp {
+    left: 1260px; background: var(--amber-bg); border: 2.5px solid var(--amber);
+    box-shadow: 0 16px 36px -16px rgba(247,144,9,.25);
+    animation-name: mcp-in;
+  }
+  .b-mcp .b-title, .b-mcp .b-sub { color: #b54708; }
+
+  .b-db {
+    left: 1550px; background: var(--blue-bg); border: 2.5px solid var(--blue);
+    box-shadow: 0 16px 36px -16px rgba(13,153,255,.25);
+    animation-name: db-in;
+  }
+  .b-db .b-title, .b-db .b-sub { color: #026aa2; }
+
+  /* ---------- Timeline (14s loop) ----------
+     0–4%    scene in             4–10%  eyebrow
+     6–16%   question, line 1     14–24% line 2, then pink underline (22–30%)
+     28–36%  the monolith         36–46% monolith fades while 4 agents spread out
+     48–56%  two containers group the agents 2-by-2
+     58–66%  a2a protocol line between containers
+     68–74%  arrow to MCP + MCP block
+     74–80%  arrow to DB + Database block
+     80–94%  final architectural frame holds
+     96–100% fade out */
+  @keyframes stage { 0% { opacity: 0 } 4%, 96% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes eyebrow { 0%, 4% { opacity: 0 } 10%, 100% { opacity: 1 } }
+  @keyframes l1 { 0%, 6% { opacity: 0; transform: translateY(24px) } 16%, 100% { opacity: 1; transform: none } }
+  @keyframes l2 { 0%, 14% { opacity: 0; transform: translateY(24px) } 24%, 100% { opacity: 1; transform: none } }
+  @keyframes underline { 0%, 22% { width: 0 } 30%, 100% { width: 100% } }
+  @keyframes mono { 0%, 28% { opacity: 0; transform: scale(.95) } 34%, 38% { opacity: 1; transform: none } 44%, 100% { opacity: 0; transform: scale(1.05) } }
+  @keyframes a1 { 0%, 36% { opacity: 0; transform: translateX(360px) scale(0.85) } 44%, 100% { opacity: 1; transform: none } }
+  @keyframes a2 { 0%, 37% { opacity: 0; transform: translateX(180px) scale(0.85) } 45%, 100% { opacity: 1; transform: none } }
+  @keyframes a3 { 0%, 38% { opacity: 0; transform: translateX(-80px) scale(0.85) } 46%, 100% { opacity: 1; transform: none } }
+  @keyframes a4 { 0%, 39% { opacity: 0; transform: translateX(-260px) scale(0.85) } 47%, 100% { opacity: 1; transform: none } }
+  @keyframes cont-in { 0%, 48% { opacity: 0; transform: scale(0.95); } 56%, 100% { opacity: 1; transform: scale(1); } }
+  @keyframes a2a-in { 0%, 58% { opacity: 0; transform: scaleX(0); } 64%, 100% { opacity: 1; transform: scaleX(1); } }
+  @keyframes arr-mcp { 0%, 68% { opacity: 0; transform: scaleX(0); } 72%, 100% { opacity: 1; transform: scaleX(1); } }
+  @keyframes mcp-in { 0%, 69% { opacity: 0; transform: translateY(16px); } 73%, 100% { opacity: 1; transform: none; } }
+  @keyframes arr-db { 0%, 74% { opacity: 0; transform: scaleX(0); } 78%, 100% { opacity: 1; transform: scaleX(1); } }
+  @keyframes db-in { 0%, 75% { opacity: 0; transform: translateY(16px); } 79%, 100% { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="stage">
+    <div class="eyebrow">Google · 2026</div>
+    <h1 class="q"><span class="l1">Why should we decouple the architecture</span><span class="l2">into a <span class="underline-pink">Distributed Multi-Agent System</span>?</span></h1>
+
+    <!-- Initial monolith -->
+    <div class="mono">one monolithic agent</div>
+
+    <!-- 2 Containers grouping agents 2-by-2 -->
+    <div class="cont c-left"><span class="c-tag">Container 1</span></div>
+    <div class="cont c-right"><span class="c-tag">Container 2</span></div>
+
+    <!-- The 4 agents -->
+    <div class="card ag a1"><img src="_shared/img/robot-head.png" alt=""><b>Agent 1</b></div>
+    <div class="card ag a2"><img src="_shared/img/robot-head.png" alt=""><b>Agent 2</b></div>
+    <div class="card ag a3"><img src="_shared/img/robot-head.png" alt=""><b>Agent 3</b></div>
+    <div class="card ag a4"><img src="_shared/img/robot-head.png" alt=""><b>Agent 4</b></div>
+
+    <!-- A2A Protocol dashed connection between Container 1 & Container 2 -->
+    <div class="a2a-conn"><span>a2a protocol</span></div>
+
+    <!-- Arrow from Agent 4 / Container 2 to MCP -->
+    <div class="arrow-conn arr-mcp"></div>
+
+    <!-- MCP Block -->
+    <div class="card ext-box b-mcp">
+      <span class="b-icon">🗄️</span>
+      <b class="b-title">MCP</b>
+      <span class="b-sub">Protocol / Server</span>
+    </div>
+
+    <!-- Arrow from MCP to DB -->
+    <div class="arrow-conn arr-db"></div>
+
+    <!-- DB Block -->
+    <div class="card ext-box b-db">
+      <span class="b-icon">🗃️</span>
+      <b class="b-title">Database</b>
+      <span class="b-sub">BigQuery / Stops</span>
+    </div>
+  </div>
+</div>
+<script src="_shared/anim.js"></script>
+</body>
+</html>
