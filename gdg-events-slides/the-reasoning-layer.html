@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Reasoning Layer — GDG Cloud Milan Slides | Zelda Ailine Luconi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg: #FDFBF7;
@@ -19,7 +22,13 @@
       --pop-blue: #00D2FF;
       --pop-coral: #FF5C5C;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       background: var(--bg);
@@ -28,6 +37,7 @@
       display: flex;
       flex-direction: column;
     }
+
     header {
       background: var(--card);
       border-bottom: 3px solid var(--border);
@@ -38,11 +48,13 @@
       flex-wrap: wrap;
       gap: 12px;
     }
+
     .brand-group {
       display: flex;
       align-items: center;
       gap: 14px;
     }
+
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -58,27 +70,32 @@
       box-shadow: 2px 2px 0 var(--border);
       transition: transform 0.1s, box-shadow 0.1s;
     }
+
     .back-btn:hover {
       transform: translate(-1px, -1px);
       box-shadow: 3px 3px 0 var(--border);
     }
+
     .talk-meta h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.15rem;
       font-weight: 700;
       line-height: 1.2;
     }
+
     .talk-meta span {
       font-size: 0.8rem;
       color: var(--ink-muted);
       font-weight: 600;
     }
+
     .actions {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -93,12 +110,20 @@
       box-shadow: 2px 2px 0 var(--border);
       transition: transform 0.1s, box-shadow 0.1s;
     }
+
     .btn:hover {
       transform: translate(-1px, -1px);
       box-shadow: 3px 3px 0 var(--border);
     }
-    .btn--present { background: var(--pop-yellow); }
-    .btn--download { background: var(--pop-mint); }
+
+    .btn--present {
+      background: var(--pop-yellow);
+    }
+
+    .btn--download {
+      background: var(--pop-mint);
+    }
+
     main {
       flex: 1;
       display: flex;
@@ -107,6 +132,7 @@
       justify-content: center;
       padding: 20px;
     }
+
     .stage-wrapper {
       width: 100%;
       max-width: 1400px;
@@ -118,6 +144,7 @@
       display: flex;
       flex-direction: column;
     }
+
     .stage-topbar {
       background: #F2EFE9;
       border-bottom: 2px solid var(--border);
@@ -129,25 +156,39 @@
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
     }
+
     .dots {
       display: flex;
       gap: 6px;
     }
+
     .dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       border: 1.5px solid var(--border);
     }
-    .dot--r { background: var(--pop-coral); }
-    .dot--y { background: var(--pop-yellow); }
-    .dot--g { background: var(--pop-mint); }
+
+    .dot--r {
+      background: var(--pop-coral);
+    }
+
+    .dot--y {
+      background: var(--pop-yellow);
+    }
+
+    .dot--g {
+      background: var(--pop-mint);
+    }
+
     .presentation-frame {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      padding-top: 56.25%;
+      /* 16:9 Aspect Ratio */
       background: #000;
     }
+
     .presentation-frame iframe {
       position: absolute;
       top: 0;
@@ -156,6 +197,7 @@
       height: 100%;
       border: 0;
     }
+
     footer {
       text-align: center;
       padding: 16px;
@@ -166,6 +208,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="brand-group">
@@ -176,7 +219,8 @@
       </div>
     </div>
     <div class="actions">
-      <a href="The%20Reasoning%20Layer:%20Architecting%20Multi-Agent%20Support%20Systems%20with%20Google%20Cloud.pptx" download class="btn btn--download">
+      <a href="The%20Reasoning%20Layer:%20Architecting%20Multi-Agent%20Support%20Systems%20with%20Google%20Cloud.pptx"
+        download class="btn btn--download">
         📥 Download PPTX ↗
       </a>
     </div>
@@ -196,9 +240,7 @@
       <div class="presentation-frame">
         <iframe
           src="https://docs.google.com/presentation/d/1swTnNisVrjvA9DvZBiHwfciAUNjlIEfnuJE6aDk5APw/embed?start=false&loop=false&delayms=3000"
-          allowfullscreen="true"
-          mozallowfullscreen="true"
-          webkitallowfullscreen="true"
+          allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"
           title="The Reasoning Layer Slides">
         </iframe>
       </div>
@@ -209,4 +251,5 @@
     Zelda Ailine Luconi (@EilinLux) · Senior Cloud Architect &amp; Data Engineer · GDG Cloud Milan
   </footer>
 </body>
+
 </html>

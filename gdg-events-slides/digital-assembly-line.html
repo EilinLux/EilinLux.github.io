@@ -200,12 +200,6 @@
       </div>
     </div>
     <div class="actions">
-      <button onclick="toggleFrameFullscreen()" class="btn btn--present" title="Expand slide frame to full screen">
-        ⛶ Fullscreen Presentation Mode ↗
-      </button>
-      <a href="https://docs.google.com/presentation/d/1dausibxiK3QPX-jInxDuWWY9DmlY6CW01QEuFLmew_k/present" target="_blank" rel="noopener noreferrer" class="btn btn--gslides">
-        ⛶ Google Slides ↗
-      </a>
       <a href="DevFest%20Talk%20-%20The%20digital%20assembly%20line.pptx" download class="btn btn--download">
         📥 Download PPTX ↗
       </a>
@@ -224,9 +218,7 @@
           <span class="dot dot--g"></span>
         </div>
         <div class="tab-pills">
-          <button id="tab-anim" class="tab-pill active" onclick="switchDeck('anim')">⚡ Animated HTML Deck</button>
-          <button id="tab-gslides" class="tab-pill" onclick="switchDeck('gslides')">📊 Google Slides (16:9)</button>
-        </div>
+          <button id="tab-anim" class="tab-pill active" onclick="switchDeck('anim')">⚡ Animated HTML Deck</button>        </div>
         <span>Use arrows / click to advance · Press F for fullscreen</span>
       </div>
       <div class="presentation-frame">
@@ -266,15 +258,10 @@
       const frame = document.getElementById('slides-frame');
       const tabAnim = document.getElementById('tab-anim');
       const tabGslides = document.getElementById('tab-gslides');
-      if (mode === 'gslides') {
-        frame.src = 'https://docs.google.com/presentation/d/1dausibxiK3QPX-jInxDuWWY9DmlY6CW01QEuFLmew_k/embed?start=false&loop=false&delayms=3000';
-        tabGslides.classList.add('active');
-        tabAnim.classList.remove('active');
-      } else {
-        frame.src = '../digital-assembly-line/slides/01-cover.html';
-        tabAnim.classList.add('active');
-        tabGslides.classList.remove('active');
-      }
+      frame.src = '../digital-assembly-line/slides/01-cover.html';
+      tabAnim.classList.add('active');
+      tabGslides.classList.remove('active');
+      
     }
 
     window.addEventListener('keydown', (e) => {
@@ -296,3 +283,4 @@
   </script>
 </body>
 </html>
+
