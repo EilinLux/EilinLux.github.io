@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Digital Assembly Line — Presentation Mode | Zelda Ailine Luconi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --card: #FFFFFF;
+      --ink: #111115;
+      --ink-muted: #5A5A65;
+      --border: #111115;
+      --pop-yellow: #FFE600;
+      --pop-mint: #00F5A0;
+      --pop-blue: #00D2FF;
+      --pop-coral: #FF5C5C;
+      --pop-pink: #FF00BF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--card);
+      border-bottom: 3px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: var(--ink);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .back-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .talk-meta h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .talk-meta span {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 2px 2px 0 var(--border);
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+      font-family: inherit;
+    }
+    .btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .btn--present { background: var(--pop-yellow); }
+    .btn--download { background: var(--pop-mint); }
+    .btn--gslides { background: var(--pop-blue); }
+    .btn--repo { background: #FFFFFF; }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .stage-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      background: var(--card);
+      border: 3px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stage-topbar {
+      background: #F2EFE9;
+      border-bottom: 2px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+    }
+    .dot--r { background: var(--pop-coral); }
+    .dot--y { background: var(--pop-yellow); }
+    .dot--g { background: var(--pop-mint); }
+    .tab-pills {
+      display: flex;
+      gap: 8px;
+    }
+    .tab-pill {
+      padding: 4px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      background: #FFFFFF;
+      cursor: pointer;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.1s;
+    }
+    .tab-pill.active {
+      background: var(--ink);
+      color: #FFFFFF;
+    }
+    .presentation-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000;
+    }
+    .presentation-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      border-top: 2px solid var(--border);
+      background: var(--card);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-group">
+      <a href="https://eilinlux.github.io/" class="back-btn">← Portfolio</a>
+      <div class="talk-meta">
+        <h1>"The Digital Assembly Line: Designing AI Agents That Work Like Ford's Factory"</h1>
+        <span>Coderful · DevFest Modena · DevFest Milano · DevFest Lecce · Voxxed Days · AI Summit Berlin</span>
+      </div>
+    </div>
+    <div class="actions">
+      <a href="../../gdg-events-slides/DevFest%20Talk%20-%20The%20digital%20assembly%20line.pptx" download class="btn btn--download">
+        📥 Download PPTX ↗
+      </a>
+      <a href="https://github.com/EilinLux/adk2.0-medium/tree/01-first-agent" target="_blank" rel="noopener noreferrer" class="btn btn--repo">
+        💻 Workshop Repo ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage-wrapper">
+      <div class="stage-topbar">
+        <div class="dots">
+          <span class="dot dot--r"></span>
+          <span class="dot dot--y"></span>
+          <span class="dot dot--g"></span>
+        </div>
+        <div class="tab-pills">
+          <button id="tab-anim" class="tab-pill active" onclick="switchDeck('anim')">⚡ Animated HTML Deck</button>
+          <button id="tab-gslides" class="tab-pill" onclick="switchDeck('gslides')">📊 Google Slides (16:9)</button>
+        </div>
+        <span>Use arrows / click to advance · Press F for fullscreen</span>
+      </div>
+      <div class="presentation-frame">
+        <iframe
+          id="slides-frame"
+          src="01-cover.html"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+          title="The Digital Assembly Line Slides">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Zelda Ailine Luconi (@EilinLux) · Senior Cloud Architect &amp; Data Engineer · Google Developers Community
+  </footer>
+
+  <script>
+    function toggleFrameFullscreen() {
+      const frame = document.getElementById('slides-frame');
+      if (!document.fullscreenElement) {
+        if (frame.requestFullscreen) {
+          frame.requestFullscreen();
+        } else if (frame.webkitRequestFullscreen) {
+          frame.webkitRequestFullscreen();
+        } else if (frame.msRequestFullscreen) {
+          frame.msRequestFullscreen();
+        }
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function switchDeck(mode) {
+      const frame = document.getElementById('slides-frame');
+      const tabAnim = document.getElementById('tab-anim');
+      const tabGslides = document.getElementById('tab-gslides');
+      if (mode === 'gslides') {
+        frame.src = 'https://docs.google.com/presentation/d/1dausibxiK3QPX-jInxDuWWY9DmlY6CW01QEuFLmew_k/embed?start=false&loop=false&delayms=3000';
+        tabGslides.classList.add('active');
+        tabAnim.classList.remove('active');
+      } else {
+        frame.src = '01-cover.html';
+        tabAnim.classList.add('active');
+        tabGslides.classList.remove('active');
+      }
+    }
+
+    // Forward arrow keys to the iframe when focused on the wrapper
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowRight', 'ArrowLeft', 'Space', 'PageDown', 'PageUp'].includes(e.code) || ['ArrowRight', 'ArrowLeft', ' '].includes(e.key)) {
+        try {
+          const iframeWin = document.getElementById('slides-frame').contentWindow;
+          iframeWin.dispatchEvent(new KeyboardEvent('keydown', {
+            key: e.key,
+            code: e.code,
+            keyCode: e.keyCode,
+            which: e.which,
+            bubbles: true
+          }));
+        } catch (err) {}
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFrameFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>

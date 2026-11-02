@@ -114,12 +114,38 @@ if (nextSlide) document.querySelectorAll("[data-next]").forEach((a) => (a.href =
 const prefix = (f) => f.split("-")[0];
 const dock = document.createElement("div");
 dock.className = "dock";
+
+const backToPortfolio = document.createElement("a");
+backToPortfolio.className = "portfolio-btn";
+backToPortfolio.href = "https://eilinlux.github.io/";
+backToPortfolio.textContent = "← Portfolio";
+backToPortfolio.setAttribute("aria-label", "Back to Portfolio");
+dock.append(backToPortfolio);
+
 const badge = document.createElement("button");
 badge.className = "slide-id";
 badge.setAttribute("aria-label", "Go to slide");
 const index = slides.indexOf(file);
 badge.textContent = prefix(file) + (index === -1 ? "" : ` · ${index + 1} / ${slides.length}`);
 dock.append(badge);
+
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+};
+
+const presentBtn = document.createElement("button");
+presentBtn.className = "present-btn";
+presentBtn.setAttribute("aria-label", "Toggle Fullscreen Presentation Mode");
+presentBtn.textContent = "⛶ Present";
+presentBtn.addEventListener("click", toggleFullscreen);
+document.addEventListener("fullscreenchange", () => {
+  presentBtn.textContent = document.fullscreenElement ? "✕ Exit" : "⛶ Present";
+});
+dock.append(presentBtn);
 
 const menu = document.createElement("nav");
 menu.className = "slide-menu";
@@ -169,6 +195,9 @@ addEventListener("keydown", (e) => {
     openMenu(false);
   } else if (e.key === "r" || e.key === "R") {
     restart();
+  } else if (e.key === "f" || e.key === "F") {
+    e.preventDefault();
+    toggleFullscreen();
   } else if (e.key === "h" || e.key === "H") {
     setBare(!document.documentElement.classList.contains("bare"));
   } else if (e.key === "ArrowRight" || e.key === "PageDown") {

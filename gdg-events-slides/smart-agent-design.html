@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart &amp; Mindful AI Agent Building — GDG Slides | Zelda Ailine Luconi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --card: #FFFFFF;
+      --ink: #111115;
+      --ink-muted: #5A5A65;
+      --border: #111115;
+      --pop-yellow: #FFE600;
+      --pop-mint: #00F5A0;
+      --pop-blue: #00D2FF;
+      --pop-coral: #FF5C5C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--card);
+      border-bottom: 3px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: var(--ink);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .back-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .talk-meta h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .talk-meta span {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .btn--present { background: var(--pop-yellow); }
+    .btn--download { background: var(--pop-mint); }
+    .btn--repo { background: var(--pop-blue); }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .stage-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      background: var(--card);
+      border: 3px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stage-topbar {
+      background: #F2EFE9;
+      border-bottom: 2px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+    }
+    .dot--r { background: var(--pop-coral); }
+    .dot--y { background: var(--pop-yellow); }
+    .dot--g { background: var(--pop-mint); }
+    .presentation-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000;
+    }
+    .presentation-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      border-top: 2px solid var(--border);
+      background: var(--card);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-group">
+      <a href="https://eilinlux.github.io/" class="back-btn">← Portfolio</a>
+      <div class="talk-meta">
+        <h1>"Smart Agent Design — Building Agents with ADK and Ollama"</h1>
+        <span>GDG Cloud Milan &amp; GDG Polimi (Nov 2025)</span>
+      </div>
+    </div>
+    <div class="actions">
+      <a href="Smart%20&%20Mindful%20AI%20Agent%20Building%20(1).pptx" download class="btn btn--download">
+        📥 Download PPTX ↗
+      </a>
+      <a href="https://github.com/EilinLux/adk-usecases-with-gemini-and-ollama" target="_blank" rel="noopener noreferrer" class="btn btn--repo">
+        💻 Workshop Repo ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage-wrapper">
+      <div class="stage-topbar">
+        <div class="dots">
+          <span class="dot dot--r"></span>
+          <span class="dot dot--y"></span>
+          <span class="dot dot--g"></span>
+        </div>
+        <span>PRESENTATION_MODE // 16:9 SLIDESHOW</span>
+        <span>Use arrows / click to advance</span>
+      </div>
+      <div class="presentation-frame">
+        <iframe
+          src="https://docs.google.com/presentation/d/1gEyNX6DBqAvIQtj2vwDksTcJM133FszjMx6S0nI6Wdw/embed?start=false&loop=false&delayms=3000"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+          title="Smart & Mindful AI Agent Building Slides">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Zelda Ailine Luconi (@EilinLux) · Senior Cloud Architect &amp; Data Engineer · GDG Cloud Milan &amp; Polimi
+  </footer>
+</body>
+</html>

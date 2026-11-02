@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDG Events Slides | Zelda Ailine Luconi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --card: #FFFFFF;
+      --ink: #111115;
+      --ink-muted: #5A5A65;
+      --border: #111115;
+      --pop-yellow: #FFE600;
+      --pop-mint: #00F5A0;
+      --pop-blue: #00D2FF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+    .header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+    }
+    .back-btn {
+      padding: 10px 18px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 3px 3px 0 var(--border);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .back-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 3px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 5px 5px 0 var(--border);
+    }
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 9px 18px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.9rem;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .btn--yellow { background: var(--pop-yellow); }
+    .btn--mint { background: var(--pop-mint); }
+    .btn--blue { background: var(--pop-blue); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>🎤 GDG Events Slides</h1>
+        <p style="color: var(--ink-muted); margin-top: 4px;">Interactive Presentation Mode Decks &amp; Downloads</p>
+      </div>
+      <a href="https://eilinlux.github.io/" class="back-btn">← Back to Portfolio</a>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>"The Reasoning Layer: Architecting Multi-Agent Support Systems with Google Cloud"</h2>
+        <p>GDG Cloud Milan · Autogrill Headquarters (May 2026). Architectural walkthrough and demo on building production AI agents for travel retail using Google ADK.</p>
+        <div class="btn-group">
+          <a href="the-reasoning-layer.html" class="btn btn--blue">📊 View Presentation ↗</a>
+          <a href="https://docs.google.com/presentation/d/1swTnNisVrjvA9DvZBiHwfciAUNjlIEfnuJE6aDk5APw/present" target="_blank" rel="noopener noreferrer" class="btn btn--yellow">⛶ Fullscreen Mode ↗</a>
+          <a href="The%20Reasoning%20Layer:%20Architecting%20Multi-Agent%20Support%20Systems%20with%20Google%20Cloud.pptx" download class="btn btn--mint">📥 Download PPTX ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>"Smart Agent Design — Building Agents with ADK and Ollama"</h2>
+        <p>GDG Cloud Milan &amp; GDG Polimi (Nov 2025). Purposeful AI agent deployment combining Agent Development Kit (ADK) with local open-source LLMs via Ollama.</p>
+        <div class="btn-group">
+          <a href="smart-agent-design.html" class="btn btn--blue">📊 View Presentation ↗</a>
+          <a href="https://docs.google.com/presentation/d/1gEyNX6DBqAvIQtj2vwDksTcJM133FszjMx6S0nI6Wdw/present" target="_blank" rel="noopener noreferrer" class="btn btn--yellow">⛶ Fullscreen Mode ↗</a>
+          <a href="Smart%20&%20Mindful%20AI%20Agent%20Building%20(1).pptx" download class="btn btn--mint">📥 Download PPTX ↗</a>
+          <a href="https://github.com/EilinLux/adk-usecases-with-gemini-and-ollama" target="_blank" rel="noopener noreferrer" class="btn">💻 Workshop Repo ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>"The Digital Assembly Line: Designing AI Agents That Work Like Ford's Factory"</h2>
+        <p>Coderful · DevFest Modena · DevFest Milano · DevFest Lecce · Voxxed Days · AI Summit Berlin. Transition from monolithic prompts to digital assembly lines with Graph Workflows, Technological Heterogeneity, and Pydantic Structured Handoffs.</p>
+        <div class="btn-group">
+          <a href="digital-assembly-line.html" class="btn btn--blue">📊 View Presentation ↗</a>
+          <a href="https://docs.google.com/presentation/d/1dausibxiK3QPX-jInxDuWWY9DmlY6CW01QEuFLmew_k/present" target="_blank" rel="noopener noreferrer" class="btn btn--yellow">⛶ Fullscreen Mode ↗</a>
+          <a href="DevFest%20Talk%20-%20The%20digital%20assembly%20line.pptx" download class="btn btn--mint">📥 Download PPTX ↗</a>
+          <a href="https://github.com/EilinLux/adk2.0-medium/tree/01-first-agent" target="_blank" rel="noopener noreferrer" class="btn">💻 Workshop Repo ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

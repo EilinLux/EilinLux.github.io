@@ -100,19 +100,20 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #fafbff; }
 .dock {
   position: fixed; left: 24px; bottom: calc(20px + var(--notes-h, 0px)); z-index: 50; display: flex; gap: 6px;
 }
-.dock button {
+.dock button, .dock a {
   padding: 6px 12px; border-radius: 8px; cursor: pointer;
   background: rgba(255,255,255,.85); border: 1px solid #e3e7ef; color: #6b7280;
   font: 500 14px/1 var(--mono); letter-spacing: .3px;
+  text-decoration: none; display: inline-flex; align-items: center;
 }
-.dock button:hover, .notes-open .notes-toggle { color: var(--pink); border-color: var(--pink); }
+.dock button:hover, .dock a:hover, .notes-open .notes-toggle { color: var(--pink); border-color: var(--pink); }
 
 /* Phones: smaller controls, closer to the corners, so they cover less of the scaled-down slide */
 @media (max-width: 900px), (max-height: 500px) {
   .replay { right: 10px; bottom: calc(10px + var(--notes-h, 0px)); width: 40px; height: 40px; border-width: 2px; }
   .replay svg { width: 18px; height: 18px; margin-left: 2px; }
   .dock { left: 8px; bottom: calc(8px + var(--notes-h, 0px)); gap: 4px; }
-  .dock button { padding: 4px 8px; font-size: 11px; background: rgba(255,255,255,.7); }
+  .dock button, .dock a { padding: 4px 8px; font-size: 11px; background: rgba(255,255,255,.7); }
 }
 
 /* Slide menu: as tall as the window, scrolls on its own */
